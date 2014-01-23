@@ -63,6 +63,7 @@
 #include "util.h"
 #include "ueventd.h"
 #include "watchdogd.h"
+#include "vendor_init.h"
 
 struct selabel_handle *sehandle;
 struct selabel_handle *sehandle_prop;
@@ -777,7 +778,10 @@ static void export_kernel_boot_props(void)
     snprintf(tmp, PROP_VALUE_MAX, "%d", revision);
     property_set("ro.revision", tmp);
     property_set("ro.emmc",emmc_boot ? "1" : "0");
+
     property_set("ro.boot.emmc", emmc_boot ? "1" : "0");
+
+
 
     /* TODO: these are obsolete. We should delete them */
     if (!strcmp(bootmode,"factory"))
@@ -815,6 +819,11 @@ static int property_service_init_action(int nargs, char **args)
      * that /data/local.prop cannot interfere with them.
      */
     start_property_service();
+
+    /* update with vendor-specific property runtime
+     * overrides
+     */
+    vendor_load_properties();
     return 0;
 }
 
@@ -1086,6 +1095,12 @@ int main(int argc, char **argv)
     if (emmc_boot && access("/init.emmc.rc", R_OK) == 0) {
         INFO("Reading emmc config file");
             init_parse_config_file("/init.emmc.rc");
+    }
+
+    /* Check for a target specific initialisation file and read if present */
+    if (access("/init.target.rc", R_OK) == 0) {
+        INFO("Reading target specific config file");
+            init_parse_config_file("/init.target.rc");
     }
 
     /* Check for a target specific initialisation file and read if present */
