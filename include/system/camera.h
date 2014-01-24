@@ -88,15 +88,10 @@ enum {
     // Notify on autofocus start and stop. This is useful in continuous
     // autofocus - FOCUS_MODE_CONTINUOUS_VIDEO and FOCUS_MODE_CONTINUOUS_PICTURE.
     CAMERA_MSG_FOCUS_MOVE = 0x0800,       // notifyCallback
-
-#ifdef QCOM_HARDWARE
     CAMERA_MSG_STATS_DATA = 0x1000,
     CAMERA_MSG_META_DATA = 0x2000,
-#endif
-
     CAMERA_MSG_STATS_DATA = 0x1000,
     CAMERA_MSG_META_DATA = 0x2000,
-
     CAMERA_MSG_ALL_MSGS = 0xFFFF
 };
 
@@ -191,9 +186,6 @@ enum {
      */
     CAMERA_CMD_SET_VIDEO_BUFFER_COUNT = 10,
 
-#ifdef QCOM_HARDWARE
-
-
     /**
      * Commands to enable/disable preview histogram
      *
@@ -209,10 +201,6 @@ enum {
     CAMERA_CMD_LONGSHOT_OFF = 15,
     CAMERA_CMD_METADATA_ON = 100,
     CAMERA_CMD_METADATA_OFF = 101,
-
-#endif
-
-
 };
 
 /** camera fatal errors */
@@ -293,10 +281,6 @@ typedef struct camera_face {
      * -2000, -2000 if this is not supported.
      */
     int32_t mouth[2];
-
-#ifdef QCOM_HARDWARE
-
-
     int32_t smile_degree;
     int32_t smile_score;
     int32_t blink_detected;
@@ -309,10 +293,6 @@ typedef struct camera_face {
     int32_t top_bottom_gaze;
     int32_t leye_blink;
     int32_t reye_blink;
-
-#endif
-
-
 
 } camera_face_t;
 

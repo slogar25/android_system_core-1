@@ -56,10 +56,6 @@ enum {
     HAL_PIXEL_FORMAT_BGRA_8888          = 5,
     HAL_PIXEL_FORMAT_RGBA_5551          = 6,
     HAL_PIXEL_FORMAT_RGBA_4444          = 7,
-
-
-
-
     /*
      * sRGB color pixel formats:
      *

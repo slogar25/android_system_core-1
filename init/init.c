@@ -779,10 +779,6 @@ static void export_kernel_boot_props(void)
     property_set("ro.revision", tmp);
     property_set("ro.emmc",emmc_boot ? "1" : "0");
 
-    property_set("ro.boot.emmc", emmc_boot ? "1" : "0");
-
-
-
     /* TODO: these are obsolete. We should delete them */
     if (!strcmp(bootmode,"factory"))
         property_set("ro.factorytest", "1");
@@ -1085,23 +1081,7 @@ int main(int argc, char **argv)
         property_load_boot_defaults();
 
     INFO("reading config file\n");
-
-    if (!charging_mode_booting())
-       init_parse_config_file("/init.rc");
-    else
-       init_parse_config_file("/lpm.rc");
-
-    /* Check for an emmc initialisation file and read if present */
-    if (emmc_boot && access("/init.emmc.rc", R_OK) == 0) {
-        INFO("Reading emmc config file");
-            init_parse_config_file("/init.emmc.rc");
-    }
-
-    /* Check for a target specific initialisation file and read if present */
-    if (access("/init.target.rc", R_OK) == 0) {
-        INFO("Reading target specific config file");
-            init_parse_config_file("/init.target.rc");
-    }
+    init_parse_config_file("/init.rc");
 
     /* Check for a target specific initialisation file and read if present */
     if (access("/init.target.rc", R_OK) == 0) {

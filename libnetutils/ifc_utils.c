@@ -804,17 +804,6 @@ ifc_configure(const char *ifname,
         return -1;
     }
 
-
-#ifndef QCOM_HARDWARE
-    if (ifc_create_default_route(ifname, gateway)) {
-        printerr("failed to set default route %s: %s\n", ipaddr_to_string(gateway), strerror(errno));
-        ifc_close();
-        return -1;
-    }
-#endif
-
-
-
     ifc_close();
 
     snprintf(dns_prop_name, sizeof(dns_prop_name), "net.%s.dns1", ifname);

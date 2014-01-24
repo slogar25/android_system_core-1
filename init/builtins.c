@@ -239,21 +239,14 @@ int do_domainname(int nargs, char **args)
     return write_file("/proc/sys/kernel/domainname", args[1]);
 }
 
-
-/*exec <path> <arg1> <arg2> ... */
-
-
 #define MAX_PARAMETERS 64
 int do_exec(int nargs, char **args)
 {
     pid_t pid;
     int status, i, j;
     char *par[MAX_PARAMETERS];
-
-
     char prop_val[PROP_VALUE_MAX];
     int len;
-
 
     if (nargs > MAX_PARAMETERS)
     {
@@ -262,12 +255,7 @@ int do_exec(int nargs, char **args)
 
     for(i=0, j=1; i<(nargs-1) ;i++,j++)
     {
-        par[i] = args[j];
-    }
-
-
-    for(i=0, j=1; i<(nargs-1) ;i++,j++)
-    {
+ 
         if ((args[j])
             &&
             (!expand_props(prop_val, args[j], sizeof(prop_val))))
@@ -288,7 +276,6 @@ int do_exec(int nargs, char **args)
         par[i] = args[j];
     }
 
-
     par[i] = (char*)0;
     pid = fork();
     if (!pid)
@@ -298,26 +285,13 @@ int do_exec(int nargs, char **args)
         get_property_workspace(&fd, &sz);
         sprintf(tmp, "%d,%d", dup(fd), sz);
         setenv("ANDROID_PROPERTY_WORKSPACE", tmp, 1);
-
         execve(par[0],par,environ);
-
-        execve(par[0], par, environ);
-
         exit(0);
     }
     else
     {
-
-        waitpid(pid, &status, 0);
-        if (WEXITSTATUS(status) != 0) {
-            ERROR("exec: pid %1d exited with return code %d: %s", (int)pid, WEXITSTATUS(status), strerror(status));
-        }
-
+         while(wait(&status)!=pid);
     }
-
-        while(wait(&status)!=pid);
-    }
-
 
     return 0;
 }
